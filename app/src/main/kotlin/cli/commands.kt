@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 import kotlin.system.exitProcess
 import kotlin.system.measureNanoTime
 
-const val DOCS = "./src/main/resources/books"
+const val DOCS = "./src/main/resources/txt"
 
 typealias Args = Array<String>
 
@@ -38,12 +38,15 @@ fun cmdCreateIndex(args: Args) {
             time = measureNanoTime { invertedIndex = createBiwordIndex(docsIDsPaths) }
             println(LocalDateTime.now())
         }
-        "inverted_index" -> {
+        "simple" -> {
             println(LocalDateTime.now())
             time = measureNanoTime { invertedIndex = createInvertedIndex(docsIDsPaths) }
             println(LocalDateTime.now())
         }
-        else -> exitProcess(1)
+        else -> {
+            cmdHelp()
+            exitProcess(1)
+        }
     }
 
     saveInvertedIndex(invertedIndex, indexType)
@@ -58,18 +61,21 @@ fun cmdFind(args: Args) {
     val time: Long
 
     when (method) {
-        "single" -> {
+        "simple" -> {
             time = measureNanoTime { intersectResult = findWithIntersect(expression) }
         }
         "biword" -> {
             time = measureNanoTime { intersectResult = findWithBiword(expression) }
         }
-        else -> throw Exception("only \"intersect\" and \"biword\" methods are supported")
+        else -> {
+            cmdHelp()
+            exitProcess(1)
+        }
     }
 
     val foundDocs = getDocsNamesByIDs(intersectResult)
 
-    println("\nSearch time: ${time / 10E9} s")
+    println("\nSearch time: ${time / 10E8} s")
     println("\nSearched text:\n\t\"$expression\"")
     println("\nFound documents (${foundDocs.size}):")
     for (docName in foundDocs) println("\t$docName")
@@ -83,7 +89,7 @@ fun cmdFindWithSkips(args: Args) {
 
     val foundDocs = getDocsNamesByIDs(intersectResult)
 
-    println("\nSearch time: ${time / 10E9} s")
+    println("\nSearch time: ${time / 10E8} s")
     println("\nSearched text:\n\t\"$expression\"")
     println("\nFound documents (${foundDocs.size}):")
     for (docName in foundDocs) println("\t$docName")
@@ -92,8 +98,8 @@ fun cmdFindWithSkips(args: Args) {
 fun cmdHelp() {
     val helpMsg =
             """add_docs
-create_index <type: (biword/inverted_index)>
-find <method :(biword/intesect)> "<expression>"
+create_index <type: (biword/simple)>
+find <method :(biword/simple)> "<expression>"
 find_skip "<expression>"
 help"""
 
