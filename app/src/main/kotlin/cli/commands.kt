@@ -21,9 +21,14 @@ typealias Args = Array<String>
 
 fun cmdAddDocs() {
     val docsNames = File("${DOCS_DIR}/").list()
-    if (docsNames != null) saveDocsIDs(docsNames, DOCS_DIR)
+    if (docsNames!!.size == 0) {
+        println("\n${DOCS_DIR} is empty")
+        exitProcess(1)
+    }
+    
+    saveDocsIDs(docsNames, DOCS_DIR)
 
-    println("\n${docsNames?.size} documents is found")
+    println("\n${docsNames.size} documents is found")
 }
 
 fun cmdCreateIndex(args: Args) {
