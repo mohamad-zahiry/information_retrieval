@@ -2,22 +2,20 @@ package db
 
 import core.text_process.InvertedIndex
 import java.io.File
+import settings.BIWORD_INVERTED_INDEX_DB
+import settings.DOCS_IDS_DB
+import settings.SIMPLE_INVERTED_INDEX_DB
 import utils.empty
 
-const val DB_PATH = "./src/main/db"
-const val DOCS_IDS_PATH = "$DB_PATH/files_index"
-const val INVERTED_INDEX_PATH = "$DB_PATH/inverted_index"
-const val BIWORD_INVERTED_INDEX_PATH = "$DB_PATH/biword_inverted_index"
-
 fun saveDocsIDs(docsNames: Array<String>, src: String) {
-    val docsIDsFile = File(DOCS_IDS_PATH).empty()
+    val docsIDsFile = File(DOCS_IDS_DB).empty()
     for ((i, name) in docsNames.withIndex()) if (File("$src/$name").isFile)
             docsIDsFile.appendText("$i $src/$name\n")
 }
 
 fun getDocsIDs(): Map<Int, String> {
     val docsIDs = mutableMapOf<Int, String>()
-    for (line in File(DOCS_IDS_PATH).readLines()) {
+    for (line in File(DOCS_IDS_DB).readLines()) {
         val (id, name) = line.split(" ", limit = 2)
         docsIDs[id.toInt()] = name
     }
@@ -27,8 +25,8 @@ fun getDocsIDs(): Map<Int, String> {
 fun saveInvertedIndex(invertedIndex: InvertedIndex, type: String) {
     val path =
             when (type) {
-                "biword" -> BIWORD_INVERTED_INDEX_PATH
-                "inverted_index" -> INVERTED_INDEX_PATH
+                "biword" -> BIWORD_INVERTED_INDEX_DB
+                "inverted_index" -> SIMPLE_INVERTED_INDEX_DB
                 else -> throw Exception("invalid inverted_index type")
             }
 
@@ -41,8 +39,8 @@ fun saveInvertedIndex(invertedIndex: InvertedIndex, type: String) {
 fun getInvertedIndex(type: String = "inverted_index"): InvertedIndex {
     val path =
             when (type) {
-                "biword" -> BIWORD_INVERTED_INDEX_PATH
-                "inverted_index" -> INVERTED_INDEX_PATH
+                "biword" -> BIWORD_INVERTED_INDEX_DB
+                "inverted_index" -> SIMPLE_INVERTED_INDEX_DB
                 else -> throw Exception("invalid inverted_index type")
             }
     val invertedIndex = mutableMapOf<String, List<Int>>()

@@ -6,8 +6,11 @@ import cli.cmdFind
 import cli.cmdFindWithSkips
 import cli.cmdHelp
 import kotlin.system.exitProcess
+import settings.doSettings
 
 fun main(args: Array<String>) {
+    doSettings()
+
     if (args.size == 0) {
         println("not enough arguments\n")
         cmdHelp()
