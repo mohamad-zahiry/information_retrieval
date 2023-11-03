@@ -14,14 +14,13 @@ import java.io.File
 import java.time.LocalDateTime
 import kotlin.system.exitProcess
 import kotlin.system.measureNanoTime
-
-const val DOCS = "./src/main/resources/txt"
+import settings.DOCS_DIR
 
 typealias Args = Array<String>
 
 fun cmdAddDocs() {
-    val docsNames = File("$DOCS/").list()
-    if (docsNames != null) saveDocsIDs(docsNames, DOCS)
+    val docsNames = File("${DOCS_DIR}/").list()
+    if (docsNames != null) saveDocsIDs(docsNames, DOCS_DIR)
 
     println("\n${docsNames?.size} documents is found")
 }

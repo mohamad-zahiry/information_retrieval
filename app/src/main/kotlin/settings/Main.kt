@@ -13,6 +13,9 @@ val FILE_EXT = "irdb"
 // default db directory
 val DB_DIR = "$USER_HOME/.irdb"
 
+// default app documents directory
+val DOCS_DIR = "$USER_HOME/ir-docs"
+
 // documents-ids db file
 val DOCS_IDS_DB = "$DB_DIR/00_docs-ids.$FILE_EXT"
 
@@ -28,5 +31,12 @@ fun doSettings() {
     if (!dbDir.exists()){
         println("Create default app DB directory \"$DB_DIR\"")
         dbDir.createDirectory()
+    }
+
+    // create DOCS_DIR if doesn't exist
+    val docsDir = Path(DOCS_DIR)
+    if (!docsDir.exists()) {
+        println("Create default app documents directory \"$DOCS_DIR\"")
+        docsDir.createDirectory()
     }
 }
