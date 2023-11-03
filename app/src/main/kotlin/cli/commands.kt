@@ -1,5 +1,6 @@
 package cli
 
+import core.finder.findWithBiword
 import core.finder.findWithIntersect
 import core.finder.findWithIntersectWithSkips
 import core.indexer.createBiwordIndex
@@ -45,16 +46,26 @@ fun cmdCreateIndex(args: Args) {
         else -> exitProcess(1)
     }
 
-    saveInvertedIndex(invertedIndex)
+    saveInvertedIndex(invertedIndex, indexType)
 
     println("\n${invertedIndex.size} words is indexed in ${time / 10E8} s")
 }
 
 fun cmdFind(args: Args) {
+    val method = args[1]
+    val expression = args[2]
     val intersectResult: List<Int>
-    val expression = args[1]
+    val time: Long
 
-    val time = measureNanoTime { intersectResult = findWithIntersect(expression) }
+    when (method) {
+        "single" -> {
+            time = measureNanoTime { intersectResult = findWithIntersect(expression) }
+        }
+        "biword" -> {
+            time = measureNanoTime { intersectResult = findWithBiword(expression) }
+        }
+        else -> throw Exception("only \"intersect\" and \"biword\" methods are supported")
+    }
 
     val foundDocs = getDocsNamesByIDs(intersectResult)
 
@@ -82,7 +93,7 @@ fun cmdHelp() {
     val helpMsg =
             """add_docs
 create_index <type: (biword/inverted_index)>
-find "<expression>"
+find <method :(biword/intesect)> "<expression>"
 find_skip "<expression>"
 help"""
 
