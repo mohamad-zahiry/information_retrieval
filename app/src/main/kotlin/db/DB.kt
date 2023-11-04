@@ -4,6 +4,8 @@ import core.text_process.InvertedIndex
 import java.io.File
 import settings.BIWORD_INVERTED_INDEX_DB
 import settings.DOCS_IDS_DB
+import settings.FILE_EXT
+import settings.POSITIONAL_INDEX_TEMP_DIR
 import settings.SIMPLE_INVERTED_INDEX_DB
 import utils.empty
 
@@ -61,4 +63,13 @@ fun getInvertedIndex(type: String = "inverted_index"): InvertedIndex {
 fun getDocsNamesByIDs(ids: List<Int>): List<String> {
     val docs = getDocsIDs().filterKeys { it in ids }
     return docs.values.toList()
+}
+
+fun saveTempPositionalIndex(docID: Int, positionalIndex: Map<String, List<Int>>) {
+    val dbFilePath = "$POSITIONAL_INDEX_TEMP_DIR/$docID.$FILE_EXT"
+    val positionalIndexFile = File(dbFilePath).empty()
+
+    for ((word, positions) in positionalIndex.entries) positionalIndexFile.appendText(
+            "$word\n${positions.joinToString(" ")}\n"
+    )
 }

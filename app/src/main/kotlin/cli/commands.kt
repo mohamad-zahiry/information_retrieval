@@ -5,13 +5,14 @@ import core.finder.findWithIntersect
 import core.finder.findWithIntersectWithSkips
 import core.indexer.createBiwordIndex
 import core.indexer.createInvertedIndex
+import core.indexer.createPositionalIndexOfDoc
 import core.text_process.InvertedIndex
 import db.getDocsIDs
 import db.getDocsNamesByIDs
 import db.saveDocsIDs
 import db.saveInvertedIndex
+import db.saveTempPositionalIndex
 import java.io.File
-import java.time.LocalDateTime
 import kotlin.system.exitProcess
 import kotlin.system.measureNanoTime
 import settings.DOCS_DIR
@@ -28,29 +29,39 @@ fun cmdAddDocs() {
 fun cmdCreateIndex(args: Args) {
     val indexType = args[1]
     val invertedIndex: InvertedIndex
+    var tempPositionalIndex: Map<String, List<Int>>
     val docsIDsPaths = getDocsIDs()
-    val time: Long
 
     when (indexType) {
         "biword" -> {
-            println(LocalDateTime.now())
-            time = measureNanoTime { invertedIndex = createBiwordIndex(docsIDsPaths) }
-            println(LocalDateTime.now())
+            val time = measureNanoTime { invertedIndex = createBiwordIndex(docsIDsPaths) }
+
+            saveInvertedIndex(invertedIndex, indexType)
+            println("\n${invertedIndex.size} words is indexed in ${time / 10E8} s")
         }
         "simple" -> {
-            println(LocalDateTime.now())
-            time = measureNanoTime { invertedIndex = createInvertedIndex(docsIDsPaths) }
-            println(LocalDateTime.now())
+            val time = measureNanoTime { invertedIndex = createInvertedIndex(docsIDsPaths) }
+
+            saveInvertedIndex(invertedIndex, indexType)
+            println("\n${invertedIndex.size} words is indexed in ${time / 10E8} s")
+        }
+        "positional" -> {
+            var time = 0L
+
+            for (docID in docsIDsPaths.keys) {
+                time += measureNanoTime { tempPositionalIndex = createPositionalIndexOfDoc(docID) }
+
+                saveTempPositionalIndex(docID, tempPositionalIndex)
+                println("${tempPositionalIndex.size} words are indexed of document \"$docID\"")
+            }
+
+            println("\n${docsIDsPaths.size} documents are indexed in ${time / 10E8} s")
         }
         else -> {
             cmdHelp()
             exitProcess(1)
         }
     }
-
-    saveInvertedIndex(invertedIndex, indexType)
-
-    println("\n${invertedIndex.size} words is indexed in ${time / 10E8} s")
 }
 
 fun cmdFind(args: Args) {
