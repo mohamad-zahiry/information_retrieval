@@ -28,7 +28,7 @@ fun saveInvertedIndex(invertedIndex: InvertedIndex, type: String) {
     val path =
             when (type) {
                 "biword" -> BIWORD_INVERTED_INDEX_DB
-                "inverted_index" -> SIMPLE_INVERTED_INDEX_DB
+                "simple" -> SIMPLE_INVERTED_INDEX_DB
                 else -> throw Exception("invalid inverted_index type")
             }
 
@@ -42,7 +42,7 @@ fun getInvertedIndex(type: String = "inverted_index"): InvertedIndex {
     val path =
             when (type) {
                 "biword" -> BIWORD_INVERTED_INDEX_DB
-                "inverted_index" -> SIMPLE_INVERTED_INDEX_DB
+                "simple" -> SIMPLE_INVERTED_INDEX_DB
                 else -> throw Exception("invalid inverted_index type")
             }
     val invertedIndex = mutableMapOf<String, List<Int>>()
