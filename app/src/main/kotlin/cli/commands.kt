@@ -37,13 +37,13 @@ fun cmdCreateIndex(args: Args) {
             val time = measureNanoTime { invertedIndex = createBiwordIndex(docsIDsPaths) }
 
             saveInvertedIndex(invertedIndex, indexType)
-            println("\n${invertedIndex.size} words is indexed in ${time / 10E8} s")
+            println("\n${invertedIndex.size} words is indexed in ${time / 10E9} s")
         }
         "simple" -> {
             val time = measureNanoTime { invertedIndex = createInvertedIndex(docsIDsPaths) }
 
             saveInvertedIndex(invertedIndex, indexType)
-            println("\n${invertedIndex.size} words is indexed in ${time / 10E8} s")
+            println("\n${invertedIndex.size} words is indexed in ${time / 10E9} s")
         }
         "positional" -> {
             var time = 0L
@@ -55,7 +55,7 @@ fun cmdCreateIndex(args: Args) {
                 println("${tempPositionalIndex.size} words are indexed of document \"$docID\"")
             }
 
-            println("\n${docsIDsPaths.size} documents are indexed in ${time / 10E8} s")
+            println("\n${docsIDsPaths.size} documents are indexed in ${time / 10E9} s")
         }
         else -> {
             cmdHelp()
@@ -85,7 +85,7 @@ fun cmdFind(args: Args) {
 
     val foundDocs = getDocsNamesByIDs(intersectResult)
 
-    println("\nSearch time: ${time / 10E8} s")
+    println("\nSearch time: ${time / 10E9} s")
     println("\nSearched text:\n\t\"$expression\"")
     println("\nFound documents (${foundDocs.size}):")
     for (docName in foundDocs) println("\t$docName")
@@ -99,7 +99,7 @@ fun cmdFindWithSkips(args: Args) {
 
     val foundDocs = getDocsNamesByIDs(intersectResult)
 
-    println("\nSearch time: ${time / 10E8} s")
+    println("\nSearch time: ${time / 10E9} s")
     println("\nSearched text:\n\t\"$expression\"")
     println("\nFound documents (${foundDocs.size}):")
     for (docName in foundDocs) println("\t$docName")
