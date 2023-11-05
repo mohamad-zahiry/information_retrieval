@@ -30,7 +30,7 @@ fun intersect(list1: List<Int>, list2: List<Int>): List<Int> {
 fun findWithIntersect(expression: String): List<Int> {
     var intersectResult: List<Int>
 
-    val invertedIndex = db.getInvertedIndex()
+    val invertedIndex = db.getInvertedIndex(type = "simple")
     val founds = mutableListOf<List<Int>>()
 
     val words = stemWords(extractWords(expression))
@@ -89,7 +89,7 @@ fun intersectWithSkips(list1: List<Int>, list2: List<Int>): List<Int> {
 fun findWithIntersectWithSkips(expression: String): List<Int> {
     var intersectResult: List<Int>
 
-    val invertedIndex = db.getInvertedIndex()
+    val invertedIndex = db.getInvertedIndex(type = "simple")
     val founds = mutableListOf<List<Int>>()
 
     val words = stemWords(extractWords(expression))

@@ -38,7 +38,7 @@ fun saveInvertedIndex(invertedIndex: InvertedIndex, type: String) {
     )
 }
 
-fun getInvertedIndex(type: String = "inverted_index"): InvertedIndex {
+fun getInvertedIndex(type: String): InvertedIndex {
     val path =
             when (type) {
                 "biword" -> BIWORD_INVERTED_INDEX_DB
