@@ -25,7 +25,7 @@ fun cmdAddDocs() {
         println("\n${DOCS_DIR} is empty")
         exitProcess(1)
     }
-    
+
     saveDocsIDs(docsNames, DOCS_DIR)
 
     println("\n${docsNames.size} documents is found")
@@ -72,15 +72,15 @@ fun cmdCreateIndex(args: Args) {
 fun cmdFind(args: Args) {
     val method = args[1]
     val expression = args[2]
-    val intersectResult: List<Int>
+    val foundDocsIDs: List<Int>
     val time: Long
 
     when (method) {
         "simple" -> {
-            time = measureNanoTime { intersectResult = findWithIntersect(expression) }
+            time = measureNanoTime { foundDocsIDs = findWithIntersect(expression) }
         }
         "biword" -> {
-            time = measureNanoTime { intersectResult = findWithBiword(expression) }
+            time = measureNanoTime { foundDocsIDs = findWithBiword(expression) }
         }
         else -> {
             cmdHelp()
@@ -88,7 +88,7 @@ fun cmdFind(args: Args) {
         }
     }
 
-    val foundDocs = getDocsNamesByIDs(intersectResult)
+    val foundDocs = getDocsNamesByIDs(foundDocsIDs)
 
     println("\nSearch time: ${time / 10E9} s")
     println("\nSearched text:\n\t\"$expression\"")
@@ -97,12 +97,12 @@ fun cmdFind(args: Args) {
 }
 
 fun cmdFindWithSkips(args: Args) {
-    val intersectResult: List<Int>
+    val foundDocsIDs: List<Int>
     val expression = args[1]
 
-    val time = measureNanoTime { intersectResult = findWithIntersectWithSkips(expression) }
+    val time = measureNanoTime { foundDocsIDs = findWithIntersectWithSkips(expression) }
 
-    val foundDocs = getDocsNamesByIDs(intersectResult)
+    val foundDocs = getDocsNamesByIDs(foundDocsIDs)
 
     println("\nSearch time: ${time / 10E9} s")
     println("\nSearched text:\n\t\"$expression\"")
