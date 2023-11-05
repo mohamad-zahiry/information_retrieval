@@ -108,7 +108,7 @@ fun cmdFindWithSkips(args: Args) {
 fun cmdHelp() {
     val helpMsg =
             """add_docs
-create_index <type: (biword/simple)>
+create_index <type: (biword/simple/positional)>
 find <method :(biword/simple)> "<expression>"
 find_skip "<expression>"
 help"""
