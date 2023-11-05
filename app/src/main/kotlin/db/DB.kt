@@ -73,3 +73,21 @@ fun saveTempPositionalIndex(docID: Int, positionalIndex: Map<String, List<Int>>)
             "$word\n${positions.joinToString(" ")}\n"
     )
 }
+
+fun getTempPositionalIndex(docID: Int): Map<String, List<Int>> {
+    val dbFilePath = "$POSITIONAL_INDEX_TEMP_DIR/$docID.$FILE_EXT"
+
+    val positionalIndex = mutableMapOf<String, List<Int>>()
+    val positionalIndexFile = File(dbFilePath).readLines()
+
+    for (i in positionalIndexFile.indices step 2) {
+        val postingsList = mutableListOf<Int>()
+
+        val word = positionalIndexFile[i]
+
+        for (id in positionalIndexFile[i + 1].split(" ")) postingsList.add(id.toInt())
+
+        positionalIndex[word] = postingsList
+    }
+    return positionalIndex.toSortedMap()
+}

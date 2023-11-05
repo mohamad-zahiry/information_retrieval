@@ -3,6 +3,7 @@ package cli
 import core.finder.findWithBiword
 import core.finder.findWithIntersect
 import core.finder.findWithIntersectWithSkips
+import core.finder.findWithTempPositional
 import core.indexer.createBiwordIndex
 import core.indexer.createInvertedIndex
 import core.indexer.createPositionalIndexOfDoc
@@ -82,6 +83,9 @@ fun cmdFind(args: Args) {
         "biword" -> {
             time = measureNanoTime { foundDocsIDs = findWithBiword(expression) }
         }
+        "temp_positional" -> {
+            time = measureNanoTime { foundDocsIDs = findWithTempPositional(expression) }
+        }
         else -> {
             cmdHelp()
             exitProcess(1)
@@ -114,7 +118,7 @@ fun cmdHelp() {
     val helpMsg =
             """add_docs
 create_index <type: (biword/simple/positional)>
-find <method :(biword/simple)> "<expression>"
+find <method :(biword/simple/temp_positional)> "<expression>"
 find_skip "<expression>"
 help"""
 
