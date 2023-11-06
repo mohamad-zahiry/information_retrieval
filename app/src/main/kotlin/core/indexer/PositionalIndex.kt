@@ -20,12 +20,7 @@ fun createPositionalIndexOfDoc(docID: Int): Map<String, List<Int>> {
     for (i in tokens.indices) {
         word = tokens[i]
         if (!positionalIndex.containsKey(word)) positionalIndex[word] = mutableListOf<Int>(i)
-        else {
-            var lastIndex = positionalIndex[word]!!.lastIndex
-            lastIndex = positionalIndex[word]!![lastIndex]
-            // saving the difference of last index and current takes fewer space in disk
-            positionalIndex[word]!!.add(i - lastIndex)
-        }
+        else positionalIndex[word]!!.add(i)
     }
     return positionalIndex
 }
