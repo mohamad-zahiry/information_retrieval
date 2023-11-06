@@ -1,7 +1,7 @@
 package core.finder
 
-import core.text_process.extractWords
 import core.text_process.stemWords
+import core.text_process.tokenize
 import db.getTempPositionalIndex
 
 fun prepareForPosMatch(
@@ -15,37 +15,35 @@ fun prepareForPosMatch(
 }
 
 fun positionalMatch(positionsList: List<List<Int>>): Boolean {
-    var matched = false
+    val listsCurrIndex = MutableList<Int>(positionsList.size) { 0 }
+    val lenList1 = positionsList[0].size
+    var targetPos: Int
+    var foundIndex: Int
 
-    val listsSearchedIndex = MutableList<Int>(positionsList.size) { 0 }
-    var workingList = 0
+    for (l1i in positionsList[0].indices) {
+        targetPos = positionsList[0][l1i] + 1
 
-    var currListIndex: Int
+        for (i in 1 ..< positionsList.size) {
+            foundIndex = positionsList[i].binarySearch(targetPos, fromIndex = listsCurrIndex[i])
 
-    while (!matched) {
-        currListIndex = listsSearchedIndex[workingList]
+            if (foundIndex < 0) {
+                if (l1i == lenList1 - 1) return false
+                break
+            }
 
-        val currPos = positionsList[workingList][currListIndex]
-        val targetPos = currPos + 1
-        val foundIndex = positionsList[workingList + 1].binarySearch(targetPos)
+            if (i == positionsList.size - 1) return true
 
-        if (foundIndex < 0) return false
-
-        if (targetPos == positionsList[workingList + 1][foundIndex]) {
-            ++workingList
-            if (workingList == positionsList.size - 1) matched = true
-            listsSearchedIndex[workingList] = foundIndex
-        } else {
-            workingList = 0
-            listsSearchedIndex[0]++
+            listsCurrIndex[i] = foundIndex
+            // increase targetPos to find it in next list
+            ++targetPos
         }
     }
 
-    return matched
+    return false
 }
 
 fun findWithTempPositional(expression: String): List<Int> {
-    val stemmedWords = stemWords(extractWords(expression))
+    val stemmedWords = stemWords(tokenize(expression))
     val intersectResult = findWithIntersect(expression)
     val foundDocsIDs = mutableListOf<Int>()
 
@@ -56,7 +54,7 @@ fun findWithTempPositional(expression: String): List<Int> {
     for (docID in intersectResult) {
         tempPositionalIndex = getTempPositionalIndex(docID)
         positionsList = prepareForPosMatch(stemmedWords, tempPositionalIndex)
-        match = positionalMatch(positionsList)
+        match = positionalMatch(positionsList, log = docID == 236)
 
         if (match) foundDocsIDs.add(docID)
     }
