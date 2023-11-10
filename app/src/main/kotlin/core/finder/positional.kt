@@ -54,7 +54,7 @@ fun findWithTempPositional(expression: String): List<Int> {
     for (docID in intersectResult) {
         tempPositionalIndex = getTempPositionalIndex(docID)
         positionsList = prepareForPosMatch(stemmedWords, tempPositionalIndex)
-        match = positionalMatch(positionsList, log = docID == 236)
+        match = positionalMatch(positionsList)
 
         if (match) foundDocsIDs.add(docID)
     }
