@@ -30,10 +30,13 @@ val DOCS_IDS_DB = "$DB_DIR/00_docs-ids.$FILE_EXT"
 
 // simple-inverted-index db file
 val SIMPLE_INVERTED_INDEX_DB = "$DB_DIR/01_simple-inverted-index.$FILE_EXT"
+
 // biword-inverted-index db file
 val BIWORD_INVERTED_INDEX_DB = "$DB_DIR/02_biword-inverted-index.$FILE_EXT"
+
 // stores each file temprary positional-index
 val POSITIONAL_INDEX_TEMP_DIR = "$DB_DIR/03_positional-index.$TMP_DIR_EXT"
+
 // positional-index db file
 val POSITIONAL_INDEX_DB = "$DB_DIR/03_positional-index.$FILE_EXT"
 

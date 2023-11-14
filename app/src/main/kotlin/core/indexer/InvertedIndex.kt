@@ -1,9 +1,9 @@
 package core.indexer
 
-// import core.text_process.removeEnglishStopWords
-import core.text_process.InvertedIndex
-import core.text_process.extractWords
-import core.text_process.stem
+// import core.textProcess.removeEnglishStopWords
+import core.textProcess.InvertedIndex
+import core.textProcess.extractWords
+import core.textProcess.stem
 import java.io.File
 
 fun createInvertedIndex(docsIDsPaths: Map<Int, String>): InvertedIndex {
@@ -13,7 +13,6 @@ fun createInvertedIndex(docsIDsPaths: Map<Int, String>): InvertedIndex {
 
     // get each file name and index
     for ((id: Int, path: String) in docsIDsPaths.asIterable()) {
-
         println("start indexing file ($id): \"$path\"")
 
         // read file data

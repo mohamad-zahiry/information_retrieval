@@ -5,8 +5,8 @@ import cli.cmdCreateIndex
 import cli.cmdFind
 import cli.cmdFindWithSkips
 import cli.cmdHelp
-import kotlin.system.exitProcess
 import settings.doSettings
+import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
     doSettings()

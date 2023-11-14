@@ -7,16 +7,16 @@ import core.finder.findWithTempPositional
 import core.indexer.createBiwordIndex
 import core.indexer.createInvertedIndex
 import core.indexer.createPositionalIndexOfDoc
-import core.text_process.InvertedIndex
+import core.textProcess.InvertedIndex
 import db.getDocsIDs
 import db.getDocsNamesByIDs
 import db.saveDocsIDs
 import db.saveInvertedIndex
 import db.saveTempPositionalIndex
+import settings.DOCS_DIR
 import java.io.File
 import kotlin.system.exitProcess
 import kotlin.system.measureNanoTime
-import settings.DOCS_DIR
 
 typealias Args = Array<String>
 
@@ -116,7 +116,7 @@ fun cmdFindWithSkips(args: Args) {
 
 fun cmdHelp() {
     val helpMsg =
-            """add_docs
+        """add_docs
 create_index <type: (biword/simple/positional)>
 find <method :(biword/simple/temp_positional)> "<expression>"
 find_skip "<expression>"

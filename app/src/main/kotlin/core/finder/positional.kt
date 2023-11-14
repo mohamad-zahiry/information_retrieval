@@ -1,14 +1,13 @@
 package core.finder
 
-import core.text_process.stemWords
-import core.text_process.tokenize
+import core.textProcess.stemWords
+import core.textProcess.tokenize
 import db.getTempPositionalIndex
 
 fun prepareForPosMatch(
-        stemmedWords: List<String>,
-        positionalIndex: Map<String, List<Int>>
+    stemmedWords: List<String>,
+    positionalIndex: Map<String, List<Int>>,
 ): List<List<Int>> {
-
     val positionsList = mutableListOf<List<Int>>()
     for (word in stemmedWords) positionsList.add(positionalIndex[word]!!)
     return positionsList
@@ -23,15 +22,19 @@ fun positionalMatch(positionsList: List<List<Int>>): Boolean {
     for (l1i in positionsList[0].indices) {
         targetPos = positionsList[0][l1i] + 1
 
-        for (i in 1 ..< positionsList.size) {
+        for (i in 1..<positionsList.size) {
             foundIndex = positionsList[i].binarySearch(targetPos, fromIndex = listsCurrIndex[i])
 
             if (foundIndex < 0) {
-                if (l1i == lenList1 - 1) return false
+                if (l1i == lenList1 - 1) {
+                    return false
+                }
                 break
             }
 
-            if (i == positionsList.size - 1) return true
+            if (i == positionsList.size - 1) {
+                return true
+            }
 
             listsCurrIndex[i] = foundIndex
             // increase targetPos to find it in next list

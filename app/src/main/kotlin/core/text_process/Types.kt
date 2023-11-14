@@ -1,4 +1,4 @@
-package core.text_process
+package core.textProcess
 
 import java.util.SortedMap
 

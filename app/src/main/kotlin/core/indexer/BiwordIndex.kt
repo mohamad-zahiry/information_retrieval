@@ -1,8 +1,8 @@
 package core.indexer
 
-import core.text_process.InvertedIndex
-import core.text_process.extractWords
-import core.text_process.stem
+import core.textProcess.InvertedIndex
+import core.textProcess.extractWords
+import core.textProcess.stem
 import java.io.File
 
 fun createBiwordIndex(docsIDsPaths: Map<Int, String>): InvertedIndex {
@@ -14,14 +14,13 @@ fun createBiwordIndex(docsIDsPaths: Map<Int, String>): InvertedIndex {
 
     // get each file name and index
     for ((id: Int, path: String) in docsIDsPaths.asIterable()) {
-
         println("start indexing file ($id): \"$path\"")
 
         // read file data and extract its words
         extractedWords = extractWords(File(path).readText())
 
         // update inverted-index with new red file
-        for (i in 0 ..< extractedWords.size - 1) {
+        for (i in 0..<extractedWords.size - 1) {
             stemmed1 = stem(extractedWords[i])
             stemmed2 = stem(extractedWords[i + 1])
             biword = "$stemmed1 $stemmed2"

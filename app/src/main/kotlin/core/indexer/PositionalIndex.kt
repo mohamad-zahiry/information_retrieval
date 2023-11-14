@@ -1,7 +1,7 @@
 package core.indexer
 
-import core.text_process.stemWords
-import core.text_process.tokenize
+import core.textProcess.stemWords
+import core.textProcess.tokenize
 import db.getDocsNamesByIDs
 import java.io.File
 
@@ -19,8 +19,12 @@ fun createPositionalIndexOfDoc(docID: Int): Map<String, List<Int>> {
 
     for (i in tokens.indices) {
         word = tokens[i]
-        if (!positionalIndex.containsKey(word)) positionalIndex[word] = mutableListOf<Int>(i)
-        else positionalIndex[word]!!.add(i)
+        if (!positionalIndex.containsKey(word)) {
+            positionalIndex[word] = mutableListOf<Int>(i)
+        } else {
+            positionalIndex[word]!!.add(i)
+        }
     }
+
     return positionalIndex
 }
