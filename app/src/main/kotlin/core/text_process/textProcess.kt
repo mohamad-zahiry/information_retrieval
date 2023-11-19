@@ -145,6 +145,19 @@ fun removeEnglishStopWords(words: List<String>): List<String> {
     return words.filter { it !in englishStopWords }.toList()
 }
 
+fun splitWords(text: String): List<String> {
+    val wordRE = Regex("\\s*(.+)\\s*")
+    val wordsList = mutableListOf<String>()
+    var word: String
+
+    for (value in wordRE.findAll(text)) {
+        word = value.groups[0]!!.value
+        wordsList.add(word.lowercase())
+    }
+
+    return wordsList
+}
+
 fun tokenize(text: String): List<String> {
     // extract words of the text without removing duplicates
     val wordRE = Regex("(\\w+)\'\\w+|(\\w+)|\"(\\w+?)\"")
